@@ -60,12 +60,12 @@
 <div id="login-screen">
   <div class="login-box">
     <div style="text-align:center;margin-bottom:32px">
-      <div style="width:54px;height:54px;background:linear-gradient(135deg,#1d6fa4,#0891b2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px">📦</div>
+      <div style="width:54px;height:54px;background:linear-gradient(135deg,#1d6fa4,#0891b2);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 14px">馃摝</div>
       <div class="sans" style="font-weight:700;font-size:22px;color:#f1f5f9">StockIT Pro</div>
-      <div style="font-size:12px;color:#475569;margin-top:4px">Gestión de insumos · v4.2</div>
+      <div style="font-size:12px;color:#475569;margin-top:4px">Gesti贸n de insumos 路 v4.2</div>
     </div>
     <div class="input-wrap"><label>Usuario</label><input id="login-user" class="inp" placeholder="usuario" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-    <div class="input-wrap"><label>Contraseña</label><input id="login-pass" class="inp" type="password" placeholder="contraseña" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <div class="input-wrap"><label>Contrase帽a</label><input id="login-pass" class="inp" type="password" placeholder="contrase帽a" onkeydown="if(event.key==='Enter')doLogin()"/></div>
     <div id="login-err" style="font-size:12px;color:#f87171;margin-bottom:10px;text-align:center;display:none"></div>
     <button class="btn btn-primary lg" style="width:100%;margin-top:4px" onclick="doLogin()" id="login-btn">Ingresar</button>
   </div>
@@ -75,8 +75,8 @@
   <div id="toast"></div>
   <div class="sidebar">
     <div style="padding:22px 20px 18px;border-bottom:1px solid #1e3a5f;display:flex;align-items:center;gap:10px">
-      <div style="width:36px;height:36px;background:linear-gradient(135deg,#1d6fa4,#0891b2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px">📦</div>
-      <div><div class="sans" style="font-weight:700;font-size:15px;color:#f1f5f9">StockIT Pro</div><div style="font-size:10px;color:#475569">v4.2 · Supabase</div></div>
+      <div style="width:36px;height:36px;background:linear-gradient(135deg,#1d6fa4,#0891b2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px">馃摝</div>
+      <div><div class="sans" style="font-weight:700;font-size:15px;color:#f1f5f9">StockIT Pro</div><div style="font-size:10px;color:#475569">v4.2 路 Supabase</div></div>
     </div>
     <nav style="flex:1;padding:14px 12px" id="sidebar-nav"></nav>
     <div style="padding:14px 18px;border-top:1px solid #1e3a5f">
@@ -84,7 +84,7 @@
         <div id="user-avatar" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px"></div>
         <div><div class="sans" id="user-nombre" style="font-size:12px;font-weight:600;color:#cbd5e1"></div><div id="user-rol" style="font-size:10px"></div></div>
       </div>
-      <button class="btn btn-danger" style="width:100%;padding:7px;font-size:11px" onclick="doLogout()">Cerrar sesión</button>
+      <button class="btn btn-danger" style="width:100%;padding:7px;font-size:11px" onclick="doLogout()">Cerrar sesi贸n</button>
     </div>
   </div>
   <div class="main" id="main-content"></div>
@@ -94,7 +94,7 @@
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title" id="modal-title"></span>
-      <button class="modal-close" onclick="closeModal()">×</button>
+      <button class="modal-close" onclick="closeModal()">脳</button>
     </div>
     <div id="modal-body"></div>
   </div>
@@ -175,13 +175,13 @@ async function doLogin(){
   try{
     await loadUsuarios();
     const found=usuarios.find(x=>x.usuario===u&&x.password===p);
-    if(!found){err.textContent="Usuario o contraseña incorrectos";err.style.display="block";btn.disabled=false;btn.textContent="Ingresar";return;}
+    if(!found){err.textContent="Usuario o contrase帽a incorrectos";err.style.display="block";btn.disabled=false;btn.textContent="Ingresar";return;}
     await seedIfEmpty();await loadItems();await loadMovimientos();await loadCategorias();await loadClientes();
     usuario=found;
     document.getElementById("login-screen").style.display="none";
     document.getElementById("app").style.display="block";
     setupSidebar();renderVista();
-  }catch(e){showToast("Error de conexión: "+e.message,"error");}
+  }catch(e){showToast("Error de conexi贸n: "+e.message,"error");}
   btn.disabled=false;btn.textContent="Ingresar";
 }
 
@@ -200,15 +200,15 @@ function setupSidebar(){
   document.getElementById("user-rol").textContent=isAdmin?"Administrador":"Operador";
   document.getElementById("user-rol").style.color=isAdmin?"#38bdf8":"#34d399";
   document.getElementById("user-avatar").style.background=isAdmin?"rgba(29,111,164,.3)":"rgba(16,185,129,.2)";
-  document.getElementById("user-avatar").textContent=isAdmin?"👑":"👤";
+  document.getElementById("user-avatar").textContent=isAdmin?"馃憫":"馃懁";
   const alertas=items.filter(i=>i.stock<=i.minimo);
   const vistas=[
-    {id:"inventario",label:"Inventario",icon:"📋"},
-    {id:"alertas",label:`Alertas${alertas.length>0?` (${alertas.length})`:""}`,icon:"⚠️"},
-    {id:"movimientos",label:"Movimientos",icon:"📊"},
-    {id:"categorias",label:"Categorías",icon:"🗂️"},
-    {id:"backup",label:"Backup / Export",icon:"💾"},
-    ...(isAdmin?[{id:"usuarios",label:"Usuarios",icon:"👥"},{id:"clientes",label:"Clientes",icon:"🤝"}]:[]),
+    {id:"inventario",label:"Inventario",icon:"馃搵"},
+    {id:"alertas",label:`Alertas${alertas.length>0?` (${alertas.length})`:""}`,icon:"鈿狅笍"},
+    {id:"movimientos",label:"Movimientos",icon:"馃搳"},
+    {id:"categorias",label:"Categor铆as",icon:"馃梻锔?},
+    {id:"backup",label:"Backup / Export",icon:"馃捑"},
+    ...(isAdmin?[{id:"usuarios",label:"Usuarios",icon:"馃懃"},{id:"clientes",label:"Clientes",icon:"馃"}]:[]),
   ];
   document.getElementById("sidebar-nav").innerHTML=vistas.map(v=>`
     <button class="nav-btn${vistaActiva===v.id?" active":""}" onclick="setVista('${v.id}')"><span>${v.icon}</span>${v.label}</button>`).join("");
@@ -247,36 +247,36 @@ function renderInventario(){
   const totalValor=items.reduce((a,i)=>a+i.stock*i.precio,0);
   const isAdmin=usuario.rol==="admin";
   const thS=(col)=>`style="padding:10px 14px;font-size:10px;color:${sortBy===col?"#38bdf8":"#475569"};text-transform:uppercase;letter-spacing:.07em;cursor:pointer;text-align:left"`;
-  const arr=(col)=>sortBy===col?(sortDir==="asc"?"↑":"↓"):"";
+  const arr=(col)=>sortBy===col?(sortDir==="asc"?"鈫?:"鈫?):"";
   return `
   <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px">
     <div><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Inventario</h1>
-    <p style="font-size:12px;color:#475569;margin:4px 0 0">${items.length} items · Valor total: <span style="color:#38bdf8">$${totalValor.toLocaleString("es-AR")}</span></p></div>
+    <p style="font-size:12px;color:#475569;margin:4px 0 0">${items.length} items 路 Valor total: <span style="color:#38bdf8">$${totalValor.toLocaleString("es-AR")}</span></p></div>
     <div style="display:flex;gap:10px">
-      <button class="btn btn-ghost btn-sm" onclick="exportarExcel()">⬇ Excel</button>
-      ${isAdmin?`<button class="btn btn-ghost btn-sm" onclick="openModalNuevoCategoria()">+ Nueva categoría</button><button class="btn btn-primary btn-sm" onclick="openModalNuevo()">+ Nuevo item</button>`:""}
+      <button class="btn btn-ghost btn-sm" onclick="exportarExcel()">猬?Excel</button>
+      ${isAdmin?`<button class="btn btn-ghost btn-sm" onclick="openModalNuevoCategoria()">+ Nueva categor铆a</button><button class="btn btn-primary btn-sm" onclick="openModalNuevo()">+ Nuevo item</button>`:""}
     </div>
   </div>
   <div class="grid-4" style="margin-bottom:24px">
     <div class="card" style="padding:16px 18px;cursor:pointer;transition:border-color .15s" onmouseenter="this.style.borderColor='#1d6fa4'" onmouseleave="this.style.borderColor='#1e3a5f'" onclick="categoriaActiva='Todos';busqueda='';renderTablaInventario()">
-      <div style="display:flex;justify-content:space-between"><span style="font-size:20px">📋</span><span class="sans" style="font-size:24px;font-weight:700;color:#38bdf8">${items.length}</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:20px">馃搵</span><span class="sans" style="font-size:24px;font-weight:700;color:#38bdf8">${items.length}</span></div>
       <div style="font-size:11px;color:#475569;margin-top:8px">Total items</div>
     </div>
     <div class="card" style="padding:16px 18px;cursor:pointer;transition:border-color .15s" onmouseenter="this.style.borderColor='#f59e0b'" onmouseleave="this.style.borderColor='#1e3a5f'" onclick="setVista('alertas')">
-      <div style="display:flex;justify-content:space-between"><span style="font-size:20px">⚠️</span><span class="sans" style="font-size:24px;font-weight:700;color:${alertas.length>0?"#f59e0b":"#10b981"}">${alertas.length}</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:20px">鈿狅笍</span><span class="sans" style="font-size:24px;font-weight:700;color:${alertas.length>0?"#f59e0b":"#10b981"}">${alertas.length}</span></div>
       <div style="font-size:11px;color:#475569;margin-top:8px">Alertas</div>
     </div>
     <div class="card" style="padding:16px 18px;cursor:pointer;transition:border-color .15s" onmouseenter="this.style.borderColor='#ef4444'" onmouseleave="this.style.borderColor='#1e3a5f'" onclick="categoriaActiva='Todos';busqueda='';filtroSinStock=true;renderTablaInventario()">
-      <div style="display:flex;justify-content:space-between"><span style="font-size:20px">🚫</span><span class="sans" style="font-size:24px;font-weight:700;color:#ef4444">${items.filter(i=>i.stock===0).length}</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:20px">馃毇</span><span class="sans" style="font-size:24px;font-weight:700;color:#ef4444">${items.filter(i=>i.stock===0).length}</span></div>
       <div style="font-size:11px;color:#475569;margin-top:8px">Sin stock</div>
     </div>
     <div class="card" style="padding:16px 18px">
-      <div style="display:flex;justify-content:space-between"><span style="font-size:20px">🗂️</span><span class="sans" style="font-size:24px;font-weight:700;color:#a78bfa">${new Set(items.map(i=>i.categoria)).size}</span></div>
+      <div style="display:flex;justify-content:space-between"><span style="font-size:20px">馃梻锔?/span><span class="sans" style="font-size:24px;font-weight:700;color:#a78bfa">${new Set(items.map(i=>i.categoria)).size}</span></div>
       <div style="font-size:11px;color:#475569;margin-top:8px">Categorias</div>
     </div>
   </div>
   <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
-    <input class="inp" id="busqueda-inp" placeholder="🔍  Buscar nombre, ubicacion o codigo..." value="${busqueda}" oninput="busqueda=this.value;filtroSinStock=false;renderTablaInventario()" style="flex:1;min-width:200px;font-size:12px"/>
+    <input class="inp" id="busqueda-inp" placeholder="馃攳  Buscar nombre, ubicacion o codigo..." value="${busqueda}" oninput="busqueda=this.value;filtroSinStock=false;renderTablaInventario()" style="flex:1;min-width:200px;font-size:12px"/>
     <div style="display:flex;gap:5px;flex-wrap:wrap">
       ${getCategorias().map(c=>`<button onclick="categoriaActiva='${c}';renderTablaInventario()" style="padding:6px 12px;border-radius:7px;border:1px solid;border-color:${categoriaActiva===c?"#1d6fa4":"#1e3a5f"};background:${categoriaActiva===c?"rgba(29,111,164,.25)":"transparent"};color:${categoriaActiva===c?"#38bdf8":"#64748b"};font-size:11px;cursor:pointer;font-family:inherit">${c}</button>`).join("")}
     </div>
@@ -288,62 +288,62 @@ function renderInventario(){
 
 function renderAlertas(){
   const alertas=items.filter(i=>i.stock<=i.minimo).sort((a,b)=>a.stock-b.stock);
-  return`<div style="margin-bottom:24px"><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Alertas de Stock</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">${alertas.length} items requieren atención</p></div>
-  ${alertas.length===0?`<div class="card" style="padding:60px;text-align:center"><div style="font-size:36px">✅</div><div class="sans" style="color:#34d399;font-weight:600;margin-top:12px">Todo el stock está en niveles normales</div></div>`
+  return`<div style="margin-bottom:24px"><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Alertas de Stock</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">${alertas.length} items requieren atenci贸n</p></div>
+  ${alertas.length===0?`<div class="card" style="padding:60px;text-align:center"><div style="font-size:36px">鉁?/div><div class="sans" style="color:#34d399;font-weight:600;margin-top:12px">Todo el stock est谩 en niveles normales</div></div>`
   :alertas.map(item=>{const s=status(item.stock,item.minimo);return`<div style="background:#0d1b2a;border:1px solid ${s.color}30;border-left:3px solid ${s.color};border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-    <div style="display:flex;gap:12px"><span style="font-size:22px">${getIconos()[item.categoria]||"📦"}</span><div><div class="sans" style="font-weight:600;font-size:14px;color:#f1f5f9">${item.nombre}</div><div style="font-size:11px;color:#475569">${item.categoria} · ${item.ubicacion}</div></div></div>
+    <div style="display:flex;gap:12px"><span style="font-size:22px">${getIconos()[item.categoria]||"馃摝"}</span><div><div class="sans" style="font-weight:600;font-size:14px;color:#f1f5f9">${item.nombre}</div><div style="font-size:11px;color:#475569">${item.categoria} 路 ${item.ubicacion}</div></div></div>
     <div style="display:flex;align-items:center;gap:16px"><div style="text-align:right"><div class="sans" style="color:${s.color};font-weight:700">Stock: ${item.stock} / Min: ${item.minimo}</div><div style="font-size:11px;color:#475569">Reponer ${Math.max(0,item.minimo-item.stock+2)} unidades</div></div>
     <button class="btn btn-primary btn-sm" onclick="openModalMovimiento(${item.id},'entrada')">+ Reponer</button></div>
   </div>`;}).join("")}`;
 }
 
 function renderMovimientos(){
-  return`<div style="display:flex;justify-content:space-between;margin-bottom:24px"><div><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Historial de Movimientos</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">${movimientos.length} movimientos registrados</p></div><button class="btn btn-ghost btn-sm" onclick="exportarPDFMovimientos()">⬇ PDF</button></div>
-  ${movimientos.length===0?`<div class="card" style="padding:60px;text-align:center;color:#475569">No hay movimientos registrados aún.</div>`
+  return`<div style="display:flex;justify-content:space-between;margin-bottom:24px"><div><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Historial de Movimientos</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">${movimientos.length} movimientos registrados</p></div><button class="btn btn-ghost btn-sm" onclick="exportarPDFMovimientos()">猬?PDF</button></div>
+  ${movimientos.length===0?`<div class="card" style="padding:60px;text-align:center;color:#475569">No hay movimientos registrados a煤n.</div>`
   :`<div class="card" style="overflow:hidden"><table><thead><tr style="border-bottom:1px solid #1e3a5f">${["Fecha","Item","Tipo","Cant.","Cliente","Usuario","Nota"].map(h=>`<th style="padding:10px 14px;font-size:10px;color:#475569;text-transform:uppercase;text-align:left">${h}</th>`).join("")}</tr></thead><tbody>
   ${movimientos.map((m,i)=>`<tr style="background:${i%2===0?"#0d1b2a":"#0a1628"}">
     <td style="font-size:11px;color:#475569">${new Date(m.fecha).toLocaleString("es-AR")}</td>
     <td class="sans" style="font-size:12px;color:#cbd5e1">${m.item_nombre}</td>
-    <td><span class="badge" style="background:${m.tipo==="entrada"?"rgba(16,185,129,.1)":"rgba(239,68,68,.1)"};color:${m.tipo==="entrada"?"#34d399":"#f87171"}">${m.tipo==="entrada"?"▲ Entrada":"▼ Salida"}</span></td>
+    <td><span class="badge" style="background:${m.tipo==="entrada"?"rgba(16,185,129,.1)":"rgba(239,68,68,.1)"};color:${m.tipo==="entrada"?"#34d399":"#f87171"}">${m.tipo==="entrada"?"鈻?Entrada":"鈻?Salida"}</span></td>
     <td class="sans" style="font-weight:700;font-size:14px;color:${m.tipo==="entrada"?"#34d399":"#f87171"}">${m.tipo==="entrada"?"+":"-"}${m.cantidad}</td>
-    <td style="font-size:11px;color:${m.cliente_nombre?"#94a3b8":"#334155"}">${m.cliente_nombre||"—"}</td>
+    <td style="font-size:11px;color:${m.cliente_nombre?"#94a3b8":"#334155"}">${m.cliente_nombre||"鈥?}</td>
     <td style="font-size:11px;color:#64748b">${m.usuario}</td>
-    <td style="font-size:11px;color:#475569">${m.nota||"—"}</td>
+    <td style="font-size:11px;color:#475569">${m.nota||"鈥?}</td>
   </tr>`).join("")}</tbody></table></div>`}`;
 }
 
 function renderBackup(){
   const alertas=items.filter(i=>i.stock<=i.minimo);
-  return`<div style="margin-bottom:24px"><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Backup y Exportación</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">Los datos se guardan automáticamente en Supabase</p></div>
+  return`<div style="margin-bottom:24px"><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Backup y Exportaci贸n</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">Los datos se guardan autom谩ticamente en Supabase</p></div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
     <div class="card" style="padding:22px">
-      <div style="font-size:28px;margin-bottom:8px">📄</div>
+      <div style="font-size:28px;margin-bottom:8px">馃搫</div>
       <div class="sans" style="font-weight:700;font-size:14px;color:#f1f5f9;margin-bottom:4px">Reportes PDF</div>
-      <div style="font-size:11px;color:#475569;margin-bottom:14px;line-height:1.6">Descargá cada reporte por separado en fondo blanco.</div>
+      <div style="font-size:11px;color:#475569;margin-bottom:14px;line-height:1.6">Descarg谩 cada reporte por separado en fondo blanco.</div>
       <div style="display:flex;flex-direction:column;gap:8px">
-        <button class="btn btn-primary" style="width:100%;font-size:12px" onclick="exportarPDFInventario()">📋 Inventario completo</button>
-        <button class="btn btn-warning" style="width:100%;font-size:12px" onclick="exportarPDFStockBajo()">⚠️ Stock bajo / Sin stock</button>
-        <button class="btn btn-ghost" style="width:100%;font-size:12px" onclick="exportarPDFMovimientos()">📊 Movimientos</button>
+        <button class="btn btn-primary" style="width:100%;font-size:12px" onclick="exportarPDFInventario()">馃搵 Inventario completo</button>
+        <button class="btn btn-warning" style="width:100%;font-size:12px" onclick="exportarPDFStockBajo()">鈿狅笍 Stock bajo / Sin stock</button>
+        <button class="btn btn-ghost" style="width:100%;font-size:12px" onclick="exportarPDFMovimientos()">馃搳 Movimientos</button>
       </div>
     </div>
     <div class="card" style="padding:22px">
-      <div style="font-size:28px;margin-bottom:8px">📊</div>
+      <div style="font-size:28px;margin-bottom:8px">馃搳</div>
       <div class="sans" style="font-weight:700;font-size:14px;color:#f1f5f9;margin-bottom:4px">Exportar Excel</div>
       <div style="font-size:11px;color:#475569;margin-bottom:14px;line-height:1.6">Inventario y movimientos en formato .xlsx para abrir en Excel.</div>
-      <button class="btn btn-primary" style="width:100%" onclick="exportarExcel()">⬇ Descargar Excel (.xlsx)</button>
+      <button class="btn btn-primary" style="width:100%" onclick="exportarExcel()">猬?Descargar Excel (.xlsx)</button>
     </div>
   </div>
   <div class="card" style="padding:22px">
     <div style="display:flex;align-items:center;gap:12px">
-      <div style="font-size:28px">☁️</div>
+      <div style="font-size:28px">鈽侊笍</div>
       <div style="flex:1">
         <div class="sans" style="font-weight:700;font-size:14px;color:#f1f5f9;margin-bottom:4px">Estado Supabase</div>
         <div style="display:flex;gap:20px;font-size:12px;color:#475569">
-          <span>📦 <span style="color:#94a3b8">${items.length} items</span></span>
-          <span>⚠️ <span style="color:${alertas.length>0?"#f59e0b":"#94a3b8"}">${alertas.length} alertas</span></span>
-          <span>📊 <span style="color:#94a3b8">${movimientos.length} movimientos</span></span>
-          <span>👥 <span style="color:#94a3b8">${usuarios.length} usuarios</span></span>
-          <span>🟢 <span style="color:#34d399">Conectado</span></span>
+          <span>馃摝 <span style="color:#94a3b8">${items.length} items</span></span>
+          <span>鈿狅笍 <span style="color:${alertas.length>0?"#f59e0b":"#94a3b8"}">${alertas.length} alertas</span></span>
+          <span>馃搳 <span style="color:#94a3b8">${movimientos.length} movimientos</span></span>
+          <span>馃懃 <span style="color:#94a3b8">${usuarios.length} usuarios</span></span>
+          <span>馃煝 <span style="color:#34d399">Conectado</span></span>
         </div>
       </div>
     </div>
@@ -353,14 +353,14 @@ function renderBackup(){
 // USUARIOS
 function renderUsuarios(){
   return`<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px">
-    <div><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Gestión de Usuarios</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">${usuarios.length} usuarios registrados</p></div>
+    <div><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Gesti贸n de Usuarios</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">${usuarios.length} usuarios registrados</p></div>
     <button class="btn btn-primary btn-sm" onclick="openModalNuevoUsuario()">+ Nuevo usuario</button>
   </div>
   <div style="display:grid;gap:10px">
     ${usuarios.map(u=>{const esYo=u.id===usuario.id;return`
     <div class="card" style="padding:18px 24px;display:flex;align-items:center;justify-content:space-between">
       <div style="display:flex;align-items:center;gap:14px">
-        <div style="width:44px;height:44px;background:${u.rol==="admin"?"rgba(29,111,164,.3)":"rgba(16,185,129,.15)"};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px">${u.rol==="admin"?"👑":"👤"}</div>
+        <div style="width:44px;height:44px;background:${u.rol==="admin"?"rgba(29,111,164,.3)":"rgba(16,185,129,.15)"};border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px">${u.rol==="admin"?"馃憫":"馃懁"}</div>
         <div>
           <div class="sans" style="font-weight:600;font-size:14px;color:#f1f5f9">${u.nombre} ${esYo?`<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(56,189,248,.1);color:#38bdf8;margin-left:6px">Vos</span>`:""}</div>
           <div style="font-size:11px;color:#475569;margin-top:2px">@${u.usuario}</div>
@@ -368,9 +368,9 @@ function renderUsuarios(){
       </div>
       <div style="display:flex;align-items:center;gap:10px">
         <span style="font-size:11px;padding:4px 12px;border-radius:20px;background:${u.rol==="admin"?"rgba(29,111,164,.2)":"rgba(16,185,129,.1)"};color:${u.rol==="admin"?"#38bdf8":"#34d399"};font-weight:600">${u.rol==="admin"?"Administrador":"Operador"}</span>
-        <button onclick="openModalHistorialUsuario('${u.nombre}')" style="padding:6px 10px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:6px;color:#a78bfa;cursor:pointer;font-size:12px" title="Ver historial">📋</button>
-          <button onclick="openModalEditarUsuario(${u.id})" style="padding:6px 10px;background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;color:#94a3b8;cursor:pointer;font-size:12px">✏️</button>
-        ${!esYo?`<button onclick="confirmarEliminarUsuario(${u.id})" style="padding:6px 10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:6px;color:#f87171;cursor:pointer;font-size:12px">🗑</button>`:`<div style="width:34px"></div>`}
+        <button onclick="openModalHistorialUsuario('${u.nombre}')" style="padding:6px 10px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:6px;color:#a78bfa;cursor:pointer;font-size:12px" title="Ver historial">馃搵</button>
+          <button onclick="openModalEditarUsuario(${u.id})" style="padding:6px 10px;background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;color:#94a3b8;cursor:pointer;font-size:12px">鉁忥笍</button>
+        ${!esYo?`<button onclick="confirmarEliminarUsuario(${u.id})" style="padding:6px 10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:6px;color:#f87171;cursor:pointer;font-size:12px">馃棏</button>`:`<div style="width:34px"></div>`}
       </div>
     </div>`;}).join("")}
   </div>`;
@@ -384,7 +384,7 @@ function modalUsuarioHTML(u){
   return`
   <div class="input-wrap"><label>Nombre completo *</label><input class="inp" id="fu-nombre" value="${u?u.nombre:""}" placeholder="Ej: Juan Perez"/></div>
   <div class="input-wrap"><label>Nombre de usuario *</label><input class="inp" id="fu-usuario" value="${u?u.usuario:""}" placeholder="Ej: jperez"/></div>
-  <div class="input-wrap"><label>${u?"Nueva contraseña (vacío = no cambia)":"Contraseña *"}</label><input class="inp" id="fu-password" type="password" placeholder="${u?"••••••••":"Contraseña"}"/></div>
+  <div class="input-wrap"><label>${u?"Nueva contrase帽a (vac铆o = no cambia)":"Contrase帽a *"}</label><input class="inp" id="fu-password" type="password" placeholder="${u?"鈥⑩€⑩€⑩€⑩€⑩€⑩€⑩€?:"Contrase帽a"}"/></div>
   <div class="input-wrap"><label>Rol</label><select class="sel" id="fu-rol">
     <option value="operador"${!u||u.rol==="operador"?" selected":""}>Operador</option>
     <option value="admin"${u&&u.rol==="admin"?" selected":""}>Administrador</option>
@@ -401,8 +401,8 @@ async function guardarUsuario(editId){
   const usu=document.getElementById("fu-usuario").value.trim();
   const pass=document.getElementById("fu-password").value;
   const rol=document.getElementById("fu-rol").value;
-  if(!nombre||!usu){showToast("Completá nombre y usuario","warning");return;}
-  if(!editId&&!pass){showToast("La contraseña es obligatoria","warning");return;}
+  if(!nombre||!usu){showToast("Complet谩 nombre y usuario","warning");return;}
+  if(!editId&&!pass){showToast("La contrase帽a es obligatoria","warning");return;}
   const dup=usuarios.find(x=>x.usuario===usu&&x.id!==editId);
   if(dup){showToast("Ese nombre de usuario ya existe","error");return;}
   try{
@@ -425,14 +425,14 @@ async function guardarUsuario(editId){
 
 function confirmarEliminarUsuario(id){
   const u=usuarios.find(x=>x.id===id);if(!u)return;
-  openModal("Confirmar eliminación",`<div style="text-align:center;padding:10px 0 24px">
-    <div style="font-size:40px;margin-bottom:16px">🗑️</div>
-    <div class="sans" style="font-size:15px;color:#f1f5f9;margin-bottom:8px">¿Eliminar a <strong>${u.nombre}</strong>?</div>
-    <div style="font-size:12px;color:#475569">Esta acción no se puede deshacer.</div>
+  openModal("Confirmar eliminaci贸n",`<div style="text-align:center;padding:10px 0 24px">
+    <div style="font-size:40px;margin-bottom:16px">馃棏锔?/div>
+    <div class="sans" style="font-size:15px;color:#f1f5f9;margin-bottom:8px">驴Eliminar a <strong>${u.nombre}</strong>?</div>
+    <div style="font-size:12px;color:#475569">Esta acci贸n no se puede deshacer.</div>
   </div>
   <div style="display:flex;gap:10px">
     <button class="btn btn-ghost" style="flex:1" onclick="closeModal()">Cancelar</button>
-    <button class="btn btn-danger" style="flex:1" onclick="eliminarUsuario(${id})">Sí, eliminar</button>
+    <button class="btn btn-danger" style="flex:1" onclick="eliminarUsuario(${id})">S铆, eliminar</button>
   </div>`);
 }
 
@@ -448,10 +448,10 @@ function renderClientes(){
     <button class="btn btn-primary btn-sm" onclick="openModalNuevoCliente()">+ Nuevo cliente</button>
   </div>
   ${clientes.length===0
-    ?`<div class="card" style="padding:60px;text-align:center"><div style="font-size:36px;margin-bottom:12px">🤝</div><div class="sans" style="color:#475569;font-weight:600">No hay clientes registrados aún</div><div style="font-size:12px;color:#334155;margin-top:6px">Agregá el primer cliente para poder asignarlo a salidas de stock</div></div>`
+    ?`<div class="card" style="padding:60px;text-align:center"><div style="font-size:36px;margin-bottom:12px">馃</div><div class="sans" style="color:#475569;font-weight:600">No hay clientes registrados a煤n</div><div style="font-size:12px;color:#334155;margin-top:6px">Agreg谩 el primer cliente para poder asignarlo a salidas de stock</div></div>`
     :`<div class="card" style="overflow:hidden"><table>
       <thead><tr style="border-bottom:1px solid #1e3a5f">
-        ${["Cliente","Empresa","Email","Teléfono","Dirección","Acc."].map(h=>`<th style="padding:10px 14px;font-size:10px;color:#475569;text-transform:uppercase;text-align:left">${h}</th>`).join("")}
+        ${["Cliente","Empresa","Email","Tel茅fono","Direcci贸n","Acc."].map(h=>`<th style="padding:10px 14px;font-size:10px;color:#475569;text-transform:uppercase;text-align:left">${h}</th>`).join("")}
       </tr></thead>
       <tbody>
         ${clientes.map((c,idx)=>`<tr style="background:${idx%2===0?"#0d1b2a":"#0a1628"}">
@@ -459,13 +459,13 @@ function renderClientes(){
             <div style="width:34px;height:34px;background:rgba(167,139,250,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;color:#a78bfa;font-weight:700;flex-shrink:0">${c.nombre.charAt(0).toUpperCase()}</div>
             <span class="sans" style="font-weight:500;font-size:13px;color:#f1f5f9">${c.nombre}</span>
           </div></td>
-          <td style="font-size:12px;color:#64748b">${c.empresa||"—"}</td>
-          <td style="font-size:12px;color:#64748b">${c.email?`<a href="mailto:${c.email}" style="color:#38bdf8;text-decoration:none">${c.email}</a>`:"—"}</td>
-          <td style="font-size:12px;color:#64748b">${c.telefono||"—"}</td>
-          <td style="font-size:12px;color:#64748b">${c.direccion||"—"}</td>
+          <td style="font-size:12px;color:#64748b">${c.empresa||"鈥?}</td>
+          <td style="font-size:12px;color:#64748b">${c.email?`<a href="mailto:${c.email}" style="color:#38bdf8;text-decoration:none">${c.email}</a>`:"鈥?}</td>
+          <td style="font-size:12px;color:#64748b">${c.telefono||"鈥?}</td>
+          <td style="font-size:12px;color:#64748b">${c.direccion||"鈥?}</td>
           <td><div style="display:flex;gap:5px">
-            <button onclick="openModalEditarCliente(${c.id})" style="padding:5px 9px;background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;color:#94a3b8;cursor:pointer;font-size:12px">✏️</button>
-            <button onclick="confirmarEliminarCliente(${c.id})" style="padding:5px 9px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:6px;color:#f87171;cursor:pointer;font-size:12px">🗑</button>
+            <button onclick="openModalEditarCliente(${c.id})" style="padding:5px 9px;background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;color:#94a3b8;cursor:pointer;font-size:12px">鉁忥笍</button>
+            <button onclick="confirmarEliminarCliente(${c.id})" style="padding:5px 9px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:6px;color:#f87171;cursor:pointer;font-size:12px">馃棏</button>
           </div></td>
         </tr>`).join("")}
       </tbody>
@@ -478,13 +478,13 @@ function openModalEditarCliente(id){const c=clientes.find(x=>x.id===id);if(!c)re
 function modalClienteHTML(c){
   const editId=c?c.id:null;
   return`
-  <div class="input-wrap"><label>Nombre *</label><input class="inp" id="fcl-nombre" value="${c?c.nombre:""}" placeholder="Ej: Juan García"/></div>
-  <div class="input-wrap"><label>Empresa / Razón social</label><input class="inp" id="fcl-empresa" value="${c?c.empresa||"":""}" placeholder="Ej: García & Asociados"/></div>
+  <div class="input-wrap"><label>Nombre *</label><input class="inp" id="fcl-nombre" value="${c?c.nombre:""}" placeholder="Ej: Juan Garc铆a"/></div>
+  <div class="input-wrap"><label>Empresa / Raz贸n social</label><input class="inp" id="fcl-empresa" value="${c?c.empresa||"":""}" placeholder="Ej: Garc铆a & Asociados"/></div>
   <div class="grid-2">
     <div class="input-wrap"><label>Email</label><input class="inp" id="fcl-email" type="email" value="${c?c.email||"":""}" placeholder="correo@ejemplo.com"/></div>
-    <div class="input-wrap"><label>Teléfono</label><input class="inp" id="fcl-telefono" value="${c?c.telefono||"":""}" placeholder="Ej: 11-1234-5678"/></div>
+    <div class="input-wrap"><label>Tel茅fono</label><input class="inp" id="fcl-telefono" value="${c?c.telefono||"":""}" placeholder="Ej: 11-1234-5678"/></div>
   </div>
-  <div class="input-wrap"><label>Dirección</label><input class="inp" id="fcl-direccion" value="${c?c.direccion||"":""}" placeholder="Ej: Av. Corrientes 1234, CABA"/></div>
+  <div class="input-wrap"><label>Direcci贸n</label><input class="inp" id="fcl-direccion" value="${c?c.direccion||"":""}" placeholder="Ej: Av. Corrientes 1234, CABA"/></div>
   <hr class="divider"/>
   <div style="display:flex;gap:10px">
     <button class="btn btn-ghost" style="flex:1" onclick="closeModal()">Cancelar</button>
@@ -519,15 +519,15 @@ async function guardarCliente(editId){
 
 function confirmarEliminarCliente(id){
   const c=clientes.find(x=>x.id===id);if(!c)return;
-  openModal("Confirmar eliminación",`
+  openModal("Confirmar eliminaci贸n",`
     <div style="text-align:center;padding:10px 0 24px">
-      <div style="font-size:40px;margin-bottom:16px">🗑️</div>
-      <div class="sans" style="font-size:15px;color:#f1f5f9;margin-bottom:8px">¿Eliminar a <strong>${c.nombre}</strong>?</div>
-      <div style="font-size:12px;color:#475569">Esta acción no se puede deshacer.</div>
+      <div style="font-size:40px;margin-bottom:16px">馃棏锔?/div>
+      <div class="sans" style="font-size:15px;color:#f1f5f9;margin-bottom:8px">驴Eliminar a <strong>${c.nombre}</strong>?</div>
+      <div style="font-size:12px;color:#475569">Esta acci贸n no se puede deshacer.</div>
     </div>
     <div style="display:flex;gap:10px">
       <button class="btn btn-ghost" style="flex:1" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-danger" style="flex:1" onclick="eliminarCliente(${id})">Sí, eliminar</button>
+      <button class="btn btn-danger" style="flex:1" onclick="eliminarCliente(${id})">S铆, eliminar</button>
     </div>`);
 }
 
@@ -547,7 +547,7 @@ function renderTablaInventarioHTML(){
   const filtered=getFilteredItems();
   const isAdmin=usuario.rol==="admin";
   const thS=(col)=>`style="padding:10px 14px;font-size:10px;color:${sortBy===col?"#38bdf8":"#475569"};text-transform:uppercase;letter-spacing:.07em;cursor:pointer;text-align:left"`;
-  const arr=(col)=>sortBy===col?(sortDir==="asc"?"↑":"↓"):"";
+  const arr=(col)=>sortBy===col?(sortDir==="asc"?"鈫?:"鈫?):"";
   return`<div class="card" style="overflow:hidden"><table>
     <thead><tr style="border-bottom:1px solid #1e3a5f">
       <th ${thS("nombre")} onclick="toggleSort('nombre')">Insumo ${arr("nombre")}</th>
@@ -563,18 +563,18 @@ function renderTablaInventarioHTML(){
     <tbody>
       ${filtered.length===0?`<tr><td colspan="9" style="padding:40px;text-align:center;color:#475569">No se encontraron items</td></tr>`
       :filtered.map((item,idx)=>{const s=status(item.stock,item.minimo);return`<tr style="background:${idx%2===0?"#0d1b2a":"#0a1628"}">
-        <td><div style="display:flex;align-items:center;gap:8px"><span>${getIconos()[item.categoria]||"📦"}</span><span class="sans" style="font-weight:500;font-size:13px;color:#f1f5f9">${item.nombre}</span></div></td>
+        <td><div style="display:flex;align-items:center;gap:8px"><span>${getIconos()[item.categoria]||"馃摝"}</span><span class="sans" style="font-weight:500;font-size:13px;color:#f1f5f9">${item.nombre}</span></div></td>
         <td style="font-size:11px;color:#64748b">${item.categoria}</td>
-        <td>${item.codigo_barras?`<span style="font-size:10px;background:#060e18;padding:2px 7px;border-radius:5px;border:1px solid #1e3a5f;color:#64748b">||| ${item.codigo_barras}</span>`:`<span style="color:#1e3a5f">—</span>`}</td>
+        <td>${item.codigo_barras?`<span style="font-size:10px;background:#060e18;padding:2px 7px;border-radius:5px;border:1px solid #1e3a5f;color:#64748b">||| ${item.codigo_barras}</span>`:`<span style="color:#1e3a5f">鈥?/span>`}</td>
         <td style="text-align:center;font-weight:700;font-size:15px;color:${item.stock===0?"#ef4444":item.stock<=item.minimo?"#f59e0b":"#e2e8f0"}">${item.stock}</td>
         <td style="text-align:center;font-size:12px;color:#475569">${item.minimo}</td>
-        <td style="font-size:11px;color:#64748b">${item.ubicacion||"—"}</td>
+        <td style="font-size:11px;color:#64748b">${item.ubicacion||"鈥?}</td>
         <td style="font-size:11px;color:#64748b">$${item.precio.toLocaleString("es-AR")}</td>
         <td><span class="badge" style="background:${s.bg};color:${s.color}">${s.label}</span></td>
         <td><div style="display:flex;gap:5px">
-          <button onclick="openModalMovimiento(${item.id})" style="padding:5px 9px;background:rgba(29,111,164,.15);border:1px solid #1e3a5f;border-radius:6px;color:#38bdf8;cursor:pointer;font-size:12px">↕</button>
-          ${isAdmin?`<button onclick="openModalEditar(${item.id})" style="padding:5px 9px;background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;color:#94a3b8;cursor:pointer;font-size:12px">✏️</button>
-          <button onclick="confirmarEliminarItem(${item.id})" style="padding:5px 9px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:6px;color:#f87171;cursor:pointer;font-size:12px">🗑</button>`:""}
+          <button onclick="openModalMovimiento(${item.id})" style="padding:5px 9px;background:rgba(29,111,164,.15);border:1px solid #1e3a5f;border-radius:6px;color:#38bdf8;cursor:pointer;font-size:12px">鈫?/button>
+          ${isAdmin?`<button onclick="openModalEditar(${item.id})" style="padding:5px 9px;background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;color:#94a3b8;cursor:pointer;font-size:12px">鉁忥笍</button>
+          <button onclick="confirmarEliminarItem(${item.id})" style="padding:5px 9px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:6px;color:#f87171;cursor:pointer;font-size:12px">馃棏</button>`:""}
         </div></td>
       </tr>`;}).join("")}
     </tbody>
@@ -590,14 +590,14 @@ function openModalEditar(id){const item=items.find(i=>i.id===id);if(!item)return
 
 function modalItemHTML(f,editId){return`
   <div class="input-wrap"><label>Nombre *</label><input class="inp" id="f-nombre" value="${f.nombre||""}" placeholder="Ej: Toner HP 85A"/></div>
-  <div class="input-wrap"><label>Categoría</label><select class="sel" id="f-categoria">${categorias.map(c=>`<option value="${c.nombre}"${c.nombre===f.categoria?" selected":""}>${c.icono} ${c.nombre}</option>`).join("")}</select></div>
+  <div class="input-wrap"><label>Categor铆a</label><select class="sel" id="f-categoria">${categorias.map(c=>`<option value="${c.nombre}"${c.nombre===f.categoria?" selected":""}>${c.icono} ${c.nombre}</option>`).join("")}</select></div>
   <div class="grid-2">
     <div class="input-wrap"><label>Stock actual *</label><input class="inp" id="f-stock" type="number" value="${f.stock}" min="0"/></div>
-    <div class="input-wrap"><label>Stock mínimo *</label><input class="inp" id="f-minimo" type="number" value="${f.minimo}" min="0"/></div>
+    <div class="input-wrap"><label>Stock m铆nimo *</label><input class="inp" id="f-minimo" type="number" value="${f.minimo}" min="0"/></div>
   </div>
-  <div class="input-wrap"><label>Ubicación</label><input class="inp" id="f-ubicacion" value="${f.ubicacion||""}" placeholder="Ej: Estante A1"/></div>
+  <div class="input-wrap"><label>Ubicaci贸n</label><input class="inp" id="f-ubicacion" value="${f.ubicacion||""}" placeholder="Ej: Estante A1"/></div>
   <div class="input-wrap"><label>Precio ($)</label><input class="inp" id="f-precio" type="number" value="${f.precio||""}" min="0"/></div>
-  <div class="input-wrap"><label>Código de Barras</label><input class="inp" id="f-codbarras" value="${f.codigo_barras||""}" placeholder="Ej: 7501234567890"/></div>
+  <div class="input-wrap"><label>C贸digo de Barras</label><input class="inp" id="f-codbarras" value="${f.codigo_barras||""}" placeholder="Ej: 7501234567890"/></div>
   <div style="display:flex;gap:10px;margin-top:8px">
     <button class="btn btn-ghost" style="flex:1" onclick="closeModal()">Cancelar</button>
     <button class="btn btn-primary" style="flex:1" onclick="guardarItem(${editId||"null"})">Guardar</button>
@@ -607,24 +607,24 @@ async function guardarItem(editId){
   const nombre=document.getElementById("f-nombre").value.trim();
   const stock=document.getElementById("f-stock").value;
   const minimo=document.getElementById("f-minimo").value;
-  if(!nombre||stock===""||minimo===""){showToast("Completá los campos obligatorios","warning");return;}
+  if(!nombre||stock===""||minimo===""){showToast("Complet谩 los campos obligatorios","warning");return;}
   const payload={nombre,categoria:document.getElementById("f-categoria").value,stock:+stock,minimo:+minimo,ubicacion:document.getElementById("f-ubicacion").value,precio:+(document.getElementById("f-precio").value||0),codigo_barras:document.getElementById("f-codbarras").value||""};
   try{
-    if(editId){await updateItem(editId,payload);const idx=items.findIndex(i=>i.id===editId);if(idx>=0)items[idx]={...items[idx],...payload};await insertAuditoria("modificó","item",`"${payload.nombre}"`);showToast("Item actualizado");}
-    else{const newItem=await insertItem(payload);items.push(newItem);await insertAuditoria("agregó","item",`"${payload.nombre}"`);showToast("Item agregado");}
+    if(editId){await updateItem(editId,payload);const idx=items.findIndex(i=>i.id===editId);if(idx>=0)items[idx]={...items[idx],...payload};await insertAuditoria("modific贸","item",`"${payload.nombre}"`);showToast("Item actualizado");}
+    else{const newItem=await insertItem(payload);items.push(newItem);await insertAuditoria("agreg贸","item",`"${payload.nombre}"`);showToast("Item agregado");}
     closeModal();setupSidebar();renderVista();
   }catch(e){showToast("Error: "+e.message,"error");}
 }
 
 function confirmarEliminarItem(id){
   const item=items.find(i=>i.id===id);if(!item)return;
-  openModal("Confirmar eliminación",`<div style="text-align:center;padding:10px 0 24px"><div style="font-size:40px;margin-bottom:16px">🗑️</div><div class="sans" style="font-size:15px;color:#f1f5f9;margin-bottom:8px">¿Eliminar <strong>${item.nombre}</strong>?</div><div style="font-size:12px;color:#475569">Esta acción no se puede deshacer.</div></div>
-  <div style="display:flex;gap:10px"><button class="btn btn-ghost" style="flex:1" onclick="closeModal()">Cancelar</button><button class="btn btn-danger" style="flex:1" onclick="eliminarItem(${id})">Sí, eliminar</button></div>`);
+  openModal("Confirmar eliminaci贸n",`<div style="text-align:center;padding:10px 0 24px"><div style="font-size:40px;margin-bottom:16px">馃棏锔?/div><div class="sans" style="font-size:15px;color:#f1f5f9;margin-bottom:8px">驴Eliminar <strong>${item.nombre}</strong>?</div><div style="font-size:12px;color:#475569">Esta acci贸n no se puede deshacer.</div></div>
+  <div style="display:flex;gap:10px"><button class="btn btn-ghost" style="flex:1" onclick="closeModal()">Cancelar</button><button class="btn btn-danger" style="flex:1" onclick="eliminarItem(${id})">S铆, eliminar</button></div>`);
 }
 
 async function eliminarItem(id){
   const item=items.find(i=>i.id===id);
-  try{await deleteItem(id);items=items.filter(i=>i.id!==id);await insertAuditoria("eliminó","item",`"${item?.nombre}"`);closeModal();showToast("Item eliminado","warning");setupSidebar();renderVista();}
+  try{await deleteItem(id);items=items.filter(i=>i.id!==id);await insertAuditoria("elimin贸","item",`"${item?.nombre}"`);closeModal();showToast("Item eliminado","warning");setupSidebar();renderVista();}
   catch(e){showToast("Error: "+e.message,"error");}
 }
 
@@ -637,7 +637,7 @@ function modalMovHTML(item,tipo){return`
   </div>
   <div class="grid-2" style="margin-bottom:16px">
     ${["entrada","salida"].map(t=>`<button id="btn-tipo-${t}" onclick="selectTipo('${t}')" style="padding:12px;border-radius:9px;border:1px solid;border-color:${t===tipo?(t==="entrada"?"#10b981":"#ef4444"):"#1e3a5f"};background:${t===tipo?(t==="entrada"?"rgba(16,185,129,.12)":"rgba(239,68,68,.12)"):"transparent"};color:${t===tipo?(t==="entrada"?"#34d399":"#f87171"):"#64748b"};cursor:pointer;font-family:inherit;font-weight:700;font-size:13px">
-      ${t==="entrada"?"▲ Entrada":"▼ Salida"}<div style="font-size:10px;font-weight:400;margin-top:3px;opacity:.7">${t==="entrada"?"Suma al stock":"Resta del stock"}</div></button>`).join("")}
+      ${t==="entrada"?"鈻?Entrada":"鈻?Salida"}<div style="font-size:10px;font-weight:400;margin-top:3px;opacity:.7">${t==="entrada"?"Suma al stock":"Resta del stock"}</div></button>`).join("")}
   </div>
   <input type="hidden" id="mov-tipo" value="${tipo}"/>
   <input type="hidden" id="mov-item-id" value="${item.id}"/>
@@ -645,8 +645,8 @@ function modalMovHTML(item,tipo){return`
   <div class="input-wrap"><label>Cantidad *</label><input class="inp" id="mov-cantidad" type="number" min="1" placeholder="Cantidad" oninput="updateStockPreview()"/></div>
   <div id="mov-cliente-wrap" style="${tipo==='salida'?'':'display:none'}">
     <div class="input-wrap"><label>Cliente *</label><select class="sel" id="mov-cliente">
-      <option value="">— Seleccioná un cliente —</option>
-      ${clientes.map(c=>`<option value="${c.id}">${c.nombre}${c.empresa?` · ${c.empresa}`:""}</option>`).join("")}
+      <option value="">鈥?Seleccion谩 un cliente 鈥?/option>
+      ${clientes.map(c=>`<option value="${c.id}">${c.nombre}${c.empresa?` 路 ${c.empresa}`:""}</option>`).join("")}
     </select></div>
   </div>
   <div class="input-wrap"><label>Nota (opcional)</label><input class="inp" id="mov-nota" placeholder="Ej: Compra OC #1234..."/></div>
@@ -681,8 +681,8 @@ async function registrarMovimiento(){
   const itemId=+document.getElementById("mov-item-id").value;
   const nota=document.getElementById("mov-nota").value;
   const clienteId=tipo==="salida"?document.getElementById("mov-cliente")?.value:"";
-  if(!cant||cant<=0){showToast("Ingresá una cantidad válida","warning");return;}
-  if(tipo==="salida"&&!clienteId){showToast("Seleccioná un cliente para la salida","warning");return;}
+  if(!cant||cant<=0){showToast("Ingres谩 una cantidad v谩lida","warning");return;}
+  if(tipo==="salida"&&!clienteId){showToast("Seleccion谩 un cliente para la salida","warning");return;}
   const item=items.find(i=>i.id===itemId);if(!item)return;
   const cliente=clientes.find(c=>String(c.id)===String(clienteId));
   const nuevoStock=tipo==="entrada"?item.stock+cant:Math.max(0,item.stock-cant);
@@ -690,7 +690,7 @@ async function registrarMovimiento(){
     await updateItem(itemId,{stock:nuevoStock});
     await insertMovimiento({item_id:itemId,item_nombre:item.nombre,tipo,cantidad:cant,nota,usuario:usuario.nombre,cliente_id:cliente?cliente.id:null,cliente_nombre:cliente?cliente.nombre:null});
     item.stock=nuevoStock;await loadMovimientos();
-    closeModal();showToast(`${tipo==="entrada"?"Entrada":"Salida"} registrada: ${cant} unidades${cliente?` → ${cliente.nombre}`:""}`);setupSidebar();renderVista();
+    closeModal();showToast(`${tipo==="entrada"?"Entrada":"Salida"} registrada: ${cant} unidades${cliente?` 鈫?${cliente.nombre}`:""}`);setupSidebar();renderVista();
   }catch(e){showToast("Error: "+e.message,"error");}
 }
 
@@ -698,40 +698,172 @@ async function registrarMovimiento(){
 function renderCategorias(){
   const isAdmin=usuario.rol==="admin";
   return`<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px">
-    <div><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Categorías</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">${categorias.length} categorías registradas</p></div>
-    ${isAdmin?`<button class="btn btn-primary btn-sm" onclick="openModalNuevoCategoria()">+ Nueva categoría</button>`:""}
+    <div><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Categor铆as</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">${categorias.length} categor铆as registradas</p></div>
+    ${isAdmin?`<button class="btn btn-primary btn-sm" onclick="openModalNuevoCategoria()">+ Nueva categor铆a</button>`:""}
   </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px">
+  <div style="display:grid;gap:12px">
     ${categorias.map(c=>{
-      const cant=items.filter(i=>i.categoria===c.nombre).length;
-      return`<div class="card" style="padding:20px 22px;display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:42px;height:42px;background:rgba(29,111,164,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px">${c.icono}</div>
-          <div>
-            <div class="sans" style="font-weight:600;font-size:14px;color:#f1f5f9">${c.nombre}</div>
-            <div style="font-size:11px;color:#475569;margin-top:2px">${cant} item${cant!==1?"s":""}</div>
+      const itemsCat=items.filter(i=>i.categoria===c.nombre);
+      const cant=itemsCat.length;
+      const alertas=itemsCat.filter(i=>i.stock<=i.minimo).length;
+      const sinStock=itemsCat.filter(i=>i.stock===0).length;
+      return`<div class="card" style="padding:18px 22px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="width:46px;height:46px;background:rgba(29,111,164,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px">${c.icono}</div>
+            <div>
+              <div class="sans" style="font-weight:700;font-size:15px;color:#f1f5f9">${c.nombre}</div>
+              <div style="display:flex;gap:12px;margin-top:4px">
+                <span style="font-size:11px;color:#64748b">${cant} item${cant!==1?"s":""}</span>
+                ${alertas>0?`<span style="font-size:11px;color:#f59e0b">鈿狅笍 ${alertas} con stock bajo</span>`:""}
+                ${sinStock>0?`<span style="font-size:11px;color:#ef4444">馃毇 ${sinStock} sin stock</span>`:""}
+                ${alertas===0&&sinStock===0&&cant>0?`<span style="font-size:11px;color:#34d399">鉁?Stock OK</span>`:""}
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <button onclick="openModalInventarioCategoria('${c.nombre}')" style="padding:7px 12px;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2);border-radius:6px;color:#38bdf8;cursor:pointer;font-size:12px;font-family:inherit">馃搵 Ver inventario</button>
+            <button onclick="exportarPDFCategoria('${c.nombre}')" style="padding:7px 12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);border-radius:6px;color:#a78bfa;cursor:pointer;font-size:12px;font-family:inherit">馃搫 PDF</button>
+            ${isAdmin?`
+            <button onclick="openModalEditarCategoria(${c.id})" style="padding:7px 10px;background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;color:#94a3b8;cursor:pointer;font-size:12px">鉁忥笍</button>
+            <button onclick="confirmarEliminarCategoria(${c.id})" style="padding:7px 10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:6px;color:#f87171;cursor:pointer;font-size:12px">馃棏</button>`:""}
           </div>
         </div>
-        ${isAdmin?`<div style="display:flex;gap:6px">
-          <button onclick="openModalEditarCategoria(${c.id})" style="padding:6px 10px;background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;color:#94a3b8;cursor:pointer;font-size:12px">✏️</button>
-          <button onclick="confirmarEliminarCategoria(${c.id})" style="padding:6px 10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:6px;color:#f87171;cursor:pointer;font-size:12px">🗑</button>
-        </div>`:""}
       </div>`;
     }).join("")}
   </div>`;
 }
 
-function openModalNuevoCategoria(){openModal("Nueva categoría",modalCategoriaHTML(null));}
-function openModalEditarCategoria(id){const c=categorias.find(x=>x.id===id);if(!c)return;openModal("Editar categoría",modalCategoriaHTML(c));}
+function openModalNuevoCategoria(){openModal("Nueva categor铆a",modalCategoriaHTML(null));}
 
-const ICONOS_OPCIONES=["📦","🖨️","💾","🖥️","⌨️","🔌","🧩","🗂️","🔧","📱","🖱️","💡","🔋","📷","🎧","🖊️","📐","🗃️","⚙️","🛒"];
+function openModalInventarioCategoria(nombreCat){
+  const cat=categorias.find(c=>c.nombre===nombreCat);
+  const itemsCat=items.filter(i=>i.categoria===nombreCat).sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  const alertas=itemsCat.filter(i=>i.stock<=i.minimo).length;
+  const sinStock=itemsCat.filter(i=>i.stock===0).length;
+  openModal(`${cat?.icono||"馃摝"} Inventario 路 ${nombreCat}`,`
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <div style="flex:1;background:#060e18;border-radius:8px;padding:10px;border:1px solid #1e3a5f;text-align:center">
+        <div class="sans" style="font-size:20px;font-weight:700;color:#38bdf8">${itemsCat.length}</div>
+        <div style="font-size:10px;color:#475569">Items</div>
+      </div>
+      <div style="flex:1;background:#060e18;border-radius:8px;padding:10px;border:1px solid #1e3a5f;text-align:center">
+        <div class="sans" style="font-size:20px;font-weight:700;color:${alertas>0?"#f59e0b":"#34d399"}">${alertas}</div>
+        <div style="font-size:10px;color:#475569">Alertas</div>
+      </div>
+      <div style="flex:1;background:#060e18;border-radius:8px;padding:10px;border:1px solid #1e3a5f;text-align:center">
+        <div class="sans" style="font-size:20px;font-weight:700;color:${sinStock>0?"#ef4444":"#34d399"}">${sinStock}</div>
+        <div style="font-size:10px;color:#475569">Sin stock</div>
+      </div>
+    </div>
+    ${itemsCat.length===0
+      ?`<div style="text-align:center;padding:30px;color:#475569">No hay items en esta categor铆a</div>`
+      :`<div style="max-height:380px;overflow-y:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid #1e3a5f">
+            ${["Item","Stock","M铆nimo","Ubicaci贸n","Estado"].map(h=>`<th style="padding:8px 10px;font-size:10px;color:#475569;text-transform:uppercase;text-align:left">${h}</th>`).join("")}
+          </tr></thead>
+          <tbody>
+            ${itemsCat.map((item,idx)=>{
+              const s=status(item.stock,item.minimo);
+              return`<tr style="background:${idx%2===0?"#0d1b2a":"#0a1628"};border-bottom:1px solid #0f1f33">
+                <td style="padding:8px 10px;font-size:13px;color:#f1f5f9;font-weight:500">${item.nombre}</td>
+                <td style="padding:8px 10px;font-weight:700;font-size:14px;color:${item.stock===0?"#ef4444":item.stock<=item.minimo?"#f59e0b":"#e2e8f0"};text-align:center">${item.stock}</td>
+                <td style="padding:8px 10px;font-size:12px;color:#475569;text-align:center">${item.minimo}</td>
+                <td style="padding:8px 10px;font-size:12px;color:#64748b">${item.ubicacion||"鈥?}</td>
+                <td style="padding:8px 10px"><span style="font-size:10px;padding:2px 8px;border-radius:5px;background:${s.bg};color:${s.color};font-weight:600">${s.label}</span></td>
+              </tr>`;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>`}
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn btn-ghost" style="flex:1" onclick="closeModal()">Cerrar</button>
+      <button class="btn btn-primary" style="flex:1" onclick="closeModal();exportarPDFCategoria('${nombreCat}')">馃搫 Exportar PDF</button>
+    </div>`);
+}
+
+function exportarPDFCategoria(nombreCat){
+  const{jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const cat=categorias.find(c=>c.nombre===nombreCat);
+  const itemsCat=items.filter(i=>i.categoria===nombreCat).sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  const W=doc.internal.pageSize.getWidth();
+  const fechaStr=new Date().toLocaleString("es-AR");
+
+  // Header
+  doc.setFillColor(240,245,255);doc.rect(0,0,W,30,'F');
+  doc.setDrawColor(29,111,164);doc.setLineWidth(0.5);doc.line(0,30,W,30);
+  doc.setFontSize(9);doc.setFont("helvetica","normal");doc.setTextColor(100,116,139);
+  doc.text("StockIT Pro 路 Inventario por Categor铆a",10,10);
+  doc.setFontSize(20);doc.setFont("helvetica","bold");doc.setTextColor(15,30,60);
+  doc.text(nombreCat,10,22);
+  doc.setFontSize(8);doc.setFont("helvetica","normal");doc.setTextColor(100,116,139);
+  doc.text("Generado: "+fechaStr,W-10,22,{align:"right"});
+
+  // KPIs
+  const alertas=itemsCat.filter(i=>i.stock<=i.minimo).length;
+  const sinStock=itemsCat.filter(i=>i.stock===0).length;
+  const kpis=[
+    ["Total items",String(itemsCat.length),[29,111,164]],
+    ["Alertas",String(alertas),alertas>0?[180,100,0]:[20,140,80]],
+    ["Sin stock",String(sinStock),sinStock>0?[180,40,40]:[20,140,80]],
+  ];
+  const kpiW=(W-20)/3;
+  kpis.forEach(([label,val,color],i)=>{
+    const x=10+i*kpiW;
+    doc.setFillColor(245,248,255);doc.roundedRect(x,34,kpiW-3,16,2,2,'F');
+    doc.setDrawColor(...color);doc.setLineWidth(0.4);doc.roundedRect(x,34,kpiW-3,16,2,2,'S');
+    doc.setTextColor(...color);doc.setFontSize(16);doc.setFont("helvetica","bold");
+    doc.text(val,x+(kpiW-3)/2,44,{align:"center"});
+    doc.setTextColor(100,116,139);doc.setFontSize(7);doc.setFont("helvetica","normal");
+    doc.text(label,x+(kpiW-3)/2,49,{align:"center"});
+  });
+
+  // Tabla
+  doc.autoTable({
+    startY:56,
+    margin:{left:10,right:10},
+    head:[["Item","Stock","M铆nimo","Ubicaci贸n","Estado"]],
+    body:itemsCat.map(i=>{
+      const s=i.stock===0?"Sin stock":i.stock<=i.minimo?"Stock bajo":"OK";
+      return[i.nombre,String(i.stock),String(i.minimo),i.ubicacion||"鈥?,s];
+    }),
+    styles:{fontSize:9,cellPadding:3,textColor:[30,40,60],fillColor:[255,255,255],lineColor:[210,220,235],lineWidth:0.3},
+    headStyles:{fillColor:[29,111,164],textColor:[255,255,255],fontStyle:"bold",fontSize:9},
+    alternateRowStyles:{fillColor:[245,248,255]},
+    columnStyles:{1:{halign:"center"},2:{halign:"center"},4:{halign:"center",fontStyle:"bold"}},
+    didParseCell:(d)=>{
+      if(d.section==="body"&&d.column.index===4){
+        d.cell.styles.textColor=d.cell.raw==="Sin stock"?[200,30,30]:d.cell.raw==="Stock bajo"?[180,100,0]:[20,140,80];
+      }
+      if(d.section==="body"&&d.column.index===1){
+        const row=itemsCat[d.row.index];
+        if(row)d.cell.styles.textColor=row.stock===0?[200,30,30]:row.stock<=row.minimo?[180,100,0]:[30,40,60];
+      }
+    },
+    theme:"grid",
+  });
+
+  // Footer
+  const H=doc.internal.pageSize.getHeight();
+  doc.setDrawColor(210,220,235);doc.setLineWidth(0.3);doc.line(10,H-12,W-10,H-12);
+  doc.setTextColor(150,160,175);doc.setFontSize(7);
+  doc.text(`StockIT Pro v4.4 路 Categor铆a: ${nombreCat} 路 ${fechaStr}`,W/2,H-6,{align:"center"});
+
+  doc.save(`StockIT_${nombreCat}_${new Date().toISOString().slice(0,10)}.pdf`);
+  showToast(`PDF de ${nombreCat} descargado`);
+}
+function openModalEditarCategoria(id){const c=categorias.find(x=>x.id===id);if(!c)return;openModal("Editar categor铆a",modalCategoriaHTML(c));}
+
+const ICONOS_OPCIONES=["馃摝","馃枿锔?,"馃捑","馃枼锔?,"鈱笍","馃攲","馃З","馃梻锔?,"馃敡","馃摫","馃柋锔?,"馃挕","馃攱","馃摲","馃帶","馃枈锔?,"馃搻","馃梼锔?,"鈿欙笍","馃洅"];
 
 function modalCategoriaHTML(c){
   const editId=c?c.id:null;
-  const iconoActual=c?c.icono:"📦";
+  const iconoActual=c?c.icono:"馃摝";
   return`
   <div class="input-wrap"><label>Nombre *</label><input class="inp" id="fc-nombre" value="${c?c.nombre:""}" placeholder="Ej: Impresoras"/></div>
-  <div class="input-wrap"><label>Ícono</label>
+  <div class="input-wrap"><label>脥cono</label>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px" id="fc-iconos">
       ${ICONOS_OPCIONES.map(ic=>`<button type="button" onclick="selectIcono('${ic}')" id="ico-${ic.codePointAt(0)}" style="width:36px;height:36px;border-radius:8px;border:2px solid ${ic===iconoActual?"#1d6fa4":"#1e3a5f"};background:${ic===iconoActual?"rgba(29,111,164,.2)":"#0d1b2a"};cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center">${ic}</button>`).join("")}
     </div>
@@ -755,21 +887,21 @@ function selectIcono(ic){
 async function guardarCategoria(editId){
   const nombre=document.getElementById("fc-nombre").value.trim();
   const icono=document.getElementById("fc-icono").value;
-  if(!nombre){showToast("Ingresá un nombre para la categoría","warning");return;}
+  if(!nombre){showToast("Ingres谩 un nombre para la categor铆a","warning");return;}
   const dup=categorias.find(x=>x.nombre.toLowerCase()===nombre.toLowerCase()&&x.id!==editId);
-  if(dup){showToast("Ya existe una categoría con ese nombre","error");return;}
+  if(dup){showToast("Ya existe una categor铆a con ese nombre","error");return;}
   try{
     if(editId){
       await updateCategoria(editId,{nombre,icono});
       const idx=categorias.findIndex(x=>x.id===editId);
       if(idx>=0)categorias[idx]={...categorias[idx],nombre,icono};
-      await insertAuditoria("modificó","categoria",`"${nombre}"`);
-      showToast("Categoría actualizada");
+      await insertAuditoria("modific贸","categoria",`"${nombre}"`);
+      showToast("Categor铆a actualizada");
     }else{
       const nueva=await insertCategoria({nombre,icono});
       categorias.push(nueva);
-      await insertAuditoria("agregó","categoria",`"${nombre}"`);
-      showToast("Categoría creada");
+      await insertAuditoria("agreg贸","categoria",`"${nombre}"`);
+      showToast("Categor铆a creada");
     }
     closeModal();renderVista();
   }catch(e){showToast("Error: "+e.message,"error");}
@@ -778,15 +910,15 @@ async function guardarCategoria(editId){
 function confirmarEliminarCategoria(id){
   const c=categorias.find(x=>x.id===id);if(!c)return;
   const enUso=items.some(i=>i.categoria===c.nombre);
-  openModal("Confirmar eliminación",`
+  openModal("Confirmar eliminaci贸n",`
     <div style="text-align:center;padding:10px 0 ${enUso?0:24}px">
       <div style="font-size:40px;margin-bottom:16px">${c.icono}</div>
-      <div class="sans" style="font-size:15px;color:#f1f5f9;margin-bottom:8px">¿Eliminar categoría <strong>${c.nombre}</strong>?</div>
-      ${enUso?`<div style="font-size:12px;color:#f87171;margin:10px 0 20px;padding:10px;background:rgba(239,68,68,.08);border-radius:8px;border:1px solid rgba(239,68,68,.2)">⚠️ Esta categoría tiene items asignados. Si la eliminás, esos items quedarán sin categoría.</div>`:`<div style="font-size:12px;color:#475569">Esta acción no se puede deshacer.</div>`}
+      <div class="sans" style="font-size:15px;color:#f1f5f9;margin-bottom:8px">驴Eliminar categor铆a <strong>${c.nombre}</strong>?</div>
+      ${enUso?`<div style="font-size:12px;color:#f87171;margin:10px 0 20px;padding:10px;background:rgba(239,68,68,.08);border-radius:8px;border:1px solid rgba(239,68,68,.2)">鈿狅笍 Esta categor铆a tiene items asignados. Si la elimin谩s, esos items quedar谩n sin categor铆a.</div>`:`<div style="font-size:12px;color:#475569">Esta acci贸n no se puede deshacer.</div>`}
     </div>
     <div style="display:flex;gap:10px">
       <button class="btn btn-ghost" style="flex:1" onclick="closeModal()">Cancelar</button>
-      <button class="btn btn-danger" style="flex:1" onclick="eliminarCategoria(${id})">Sí, eliminar</button>
+      <button class="btn btn-danger" style="flex:1" onclick="eliminarCategoria(${id})">S铆, eliminar</button>
     </div>`);
 }
 
@@ -796,19 +928,19 @@ async function eliminarCategoria(id){
     await deleteCategoria(id);
     categorias=categorias.filter(x=>x.id!==id);
     if(categoriaActiva!=="Todos"&&!categorias.find(x=>x.nombre===categoriaActiva))categoriaActiva="Todos";
-    await insertAuditoria("eliminó","categoria",`"${c?.nombre}"`);
-    closeModal();showToast("Categoría eliminada","warning");renderVista();
+    await insertAuditoria("elimin贸","categoria",`"${c?.nombre}"`);
+    closeModal();showToast("Categor铆a eliminada","warning");renderVista();
   }catch(e){showToast("Error: "+e.message,"error");}
 }
 
-// ─── PDF HELPERS ──────────────────────────────────────────────────────────────
+// 鈹€鈹€鈹€ PDF HELPERS 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
 function pdfHeader(doc,titulo,subtitulo){
   const W=doc.internal.pageSize.getWidth();
   const fechaStr=new Date().toLocaleString("es-AR");
   doc.setFillColor(240,245,255);doc.rect(0,0,W,26,'F');
   doc.setDrawColor(29,111,164);doc.setLineWidth(0.5);doc.line(0,26,W,26);
   doc.setTextColor(15,30,60);doc.setFontSize(16);doc.setFont("helvetica","bold");
-  doc.text("StockIT Pro · "+titulo,10,11);
+  doc.text("StockIT Pro 路 "+titulo,10,11);
   doc.setFontSize(8);doc.setFont("helvetica","normal");doc.setTextColor(100,116,139);
   doc.text(subtitulo,10,18);
   doc.text("Generado: "+fechaStr,W-10,18,{align:"right"});
@@ -819,7 +951,7 @@ function pdfFooter(doc){
   const H=doc.internal.pageSize.getHeight();
   doc.setDrawColor(220,230,240);doc.setLineWidth(0.3);doc.line(10,H-10,W-10,H-10);
   doc.setTextColor(150,160,175);doc.setFontSize(7);doc.setFont("helvetica","normal");
-  doc.text("StockIT Pro v4.4 · "+new Date().toLocaleString("es-AR"),W/2,H-5,{align:"center"});
+  doc.text("StockIT Pro v4.4 路 "+new Date().toLocaleString("es-AR"),W/2,H-5,{align:"center"});
 }
 const pdfTableStyles={
   styles:{fontSize:8,cellPadding:2.5,textColor:[30,40,60],fillColor:[255,255,255],lineColor:[210,220,235],lineWidth:0.3},
@@ -834,10 +966,10 @@ function exportarPDFInventario(){
   const y=pdfHeader(doc,"Inventario Completo","Listado de todos los items en stock");
   doc.autoTable({
     startY:y,margin:{left:10,right:10},
-    head:[["Item","Categoría","Stock","Mínimo","Ubicación","Estado"]],
+    head:[["Item","Categor铆a","Stock","M铆nimo","Ubicaci贸n","Estado"]],
     body:items.map(i=>{
       const s=i.stock===0?"Sin stock":i.stock<=i.minimo?"Stock bajo":"OK";
-      return[i.nombre,i.categoria,String(i.stock),String(i.minimo),i.ubicacion||"—",s];
+      return[i.nombre,i.categoria,String(i.stock),String(i.minimo),i.ubicacion||"鈥?,s];
     }),
     ...pdfTableStyles,
     columnStyles:{2:{halign:"center"},3:{halign:"center"},5:{halign:"center",fontStyle:"bold"}},
@@ -852,18 +984,18 @@ function exportarPDFStockBajo(){
   const{jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
   const alertas=items.filter(i=>i.stock<=i.minimo).sort((a,b)=>a.stock-b.stock);
-  const y=pdfHeader(doc,"Stock Bajo / Sin Stock",`${alertas.length} items requieren atención`);
+  const y=pdfHeader(doc,"Stock Bajo / Sin Stock",`${alertas.length} items requieren atenci贸n`);
   if(alertas.length===0){
     doc.setTextColor(30,140,80);doc.setFontSize(14);doc.setFont("helvetica","bold");
-    doc.text("✓ Todo el stock está en niveles normales",doc.internal.pageSize.getWidth()/2,y+20,{align:"center"});
+    doc.text("鉁?Todo el stock est谩 en niveles normales",doc.internal.pageSize.getWidth()/2,y+20,{align:"center"});
   }else{
     doc.autoTable({
       startY:y,margin:{left:10,right:10},
-      head:[["Item","Categoría","Stock actual","Stock mínimo","Faltan reponer","Ubicación","Estado"]],
+      head:[["Item","Categor铆a","Stock actual","Stock m铆nimo","Faltan reponer","Ubicaci贸n","Estado"]],
       body:alertas.map(i=>{
         const falta=Math.max(0,i.minimo-i.stock+2);
         const s=i.stock===0?"SIN STOCK":"STOCK BAJO";
-        return[i.nombre,i.categoria,String(i.stock),String(i.minimo),String(falta),i.ubicacion||"—",s];
+        return[i.nombre,i.categoria,String(i.stock),String(i.minimo),String(falta),i.ubicacion||"鈥?,s];
       }),
       ...pdfTableStyles,
       headStyles:{fillColor:[180,40,40],textColor:[255,255,255],fontStyle:"bold",fontSize:8},
@@ -886,11 +1018,11 @@ function exportarPDFMovimientos(){
     body:movimientos.map(m=>[
       new Date(m.fecha).toLocaleString("es-AR"),
       m.item_nombre,
-      m.tipo==="entrada"?"▲ Entrada":"▼ Salida",
+      m.tipo==="entrada"?"鈻?Entrada":"鈻?Salida",
       (m.tipo==="entrada"?"+":"-")+m.cantidad,
-      m.cliente_nombre||"—",
+      m.cliente_nombre||"鈥?,
       m.usuario,
-      m.nota||"—"
+      m.nota||"鈥?
     ]),
     ...pdfTableStyles,
     columnStyles:{2:{halign:"center"},3:{halign:"center",fontStyle:"bold"}},
@@ -907,14 +1039,14 @@ function exportarPDFMovimientos(){
 function exportarExcel(){
   const wb=XLSX.utils.book_new();
   // Hoja inventario
-  const invData=[["Nombre","Categoría","Stock","Mínimo","Ubicación","Precio","Valor Total","Estado","Cód. Barras"]];
+  const invData=[["Nombre","Categor铆a","Stock","M铆nimo","Ubicaci贸n","Precio","Valor Total","Estado","C贸d. Barras"]];
   items.forEach(i=>{const s=status(i.stock,i.minimo);invData.push([i.nombre,i.categoria,i.stock,i.minimo,i.ubicacion||"",i.precio,i.stock*i.precio,s.label,i.codigo_barras||""]);});
   const ws1=XLSX.utils.aoa_to_sheet(invData);
   ws1["!cols"]=[{wch:35},{wch:14},{wch:8},{wch:8},{wch:16},{wch:12},{wch:14},{wch:12},{wch:16}];
   XLSX.utils.book_append_sheet(wb,ws1,"Inventario");
   // Hoja stock bajo
   const alertas=items.filter(i=>i.stock<=i.minimo);
-  const alertData=[["Nombre","Categoría","Stock","Mínimo","Faltan","Ubicación","Estado"]];
+  const alertData=[["Nombre","Categor铆a","Stock","M铆nimo","Faltan","Ubicaci贸n","Estado"]];
   alertas.forEach(i=>alertData.push([i.nombre,i.categoria,i.stock,i.minimo,Math.max(0,i.minimo-i.stock+2),i.ubicacion||"",i.stock===0?"Sin stock":"Stock bajo"]));
   const ws2=XLSX.utils.aoa_to_sheet(alertData);
   XLSX.utils.book_append_sheet(wb,ws2,"Stock Bajo");
@@ -930,7 +1062,7 @@ function exportarExcel(){
 
 // Historial por usuario
 async function openModalHistorialUsuario(nombreUsuario){
-  openModal(`Historial · ${nombreUsuario}`,`<div style="text-align:center;padding:30px"><span class="loader"></span></div>`);
+  openModal(`Historial 路 ${nombreUsuario}`,`<div style="text-align:center;padding:30px"><span class="loader"></span></div>`);
   const{data:audData}=await sb.from("auditoria").select("*").eq("usuario",nombreUsuario).order("fecha",{ascending:false}).limit(100);
   const auditoria=audData||[];
   const movUser=movimientos.filter(m=>m.usuario===nombreUsuario);
@@ -939,8 +1071,8 @@ async function openModalHistorialUsuario(nombreUsuario){
 
   // Combinar y ordenar todo por fecha
   const todo=[
-    ...movUser.map(m=>({fecha:m.fecha,tipo:"movimiento",icono:m.tipo==="entrada"?"▲":"▼",color:m.tipo==="entrada"?"#34d399":"#f87171",texto:`${m.tipo==="entrada"?"Entrada":"Salida"} de ${m.cantidad} · ${m.item_nombre}${m.cliente_nombre?" → "+m.cliente_nombre:""}${m.nota?" ("+m.nota+")":""}`})),
-    ...auditoria.map(a=>({fecha:a.fecha,tipo:a.entidad,icono:a.entidad==="item"?"📦":a.entidad==="categoria"?"🗂️":"👤",color:a.accion==="eliminó"?"#f87171":a.accion==="agregó"?"#34d399":"#38bdf8",texto:`${a.accion} ${a.entidad} ${a.detalle}`})),
+    ...movUser.map(m=>({fecha:m.fecha,tipo:"movimiento",icono:m.tipo==="entrada"?"鈻?:"鈻?,color:m.tipo==="entrada"?"#34d399":"#f87171",texto:`${m.tipo==="entrada"?"Entrada":"Salida"} de ${m.cantidad} 路 ${m.item_nombre}${m.cliente_nombre?" 鈫?"+m.cliente_nombre:""}${m.nota?" ("+m.nota+")":""}`})),
+    ...auditoria.map(a=>({fecha:a.fecha,tipo:a.entidad,icono:a.entidad==="item"?"馃摝":a.entidad==="categoria"?"馃梻锔?:"馃懁",color:a.accion==="elimin贸"?"#f87171":a.accion==="agreg贸"?"#34d399":"#38bdf8",texto:`${a.accion} ${a.entidad} ${a.detalle}`})),
   ].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
 
   document.getElementById("modal-body").innerHTML=`

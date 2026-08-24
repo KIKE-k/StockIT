@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -298,19 +297,72 @@ function renderAlertas(){
   </div>`;}).join("")}`;
 }
 
+let filtroMovFechaDesde="", filtroMovFechaHasta="", filtroMovItem="";
+
+function getMovimientosFiltrados(){
+  return movimientos.filter(m=>{
+    const fecha=new Date(m.fecha);
+    const desde=filtroMovFechaDesde?new Date(filtroMovFechaDesde+" 00:00:00"):null;
+    const hasta=filtroMovFechaHasta?new Date(filtroMovFechaHasta+" 23:59:59"):null;
+    const matchFecha=(!desde||fecha>=desde)&&(!hasta||fecha<=hasta);
+    const matchItem=!filtroMovItem||m.item_nombre.toLowerCase().includes(filtroMovItem.toLowerCase());
+    return matchFecha&&matchItem;
+  });
+}
+
 function renderMovimientos(){
-  return`<div style="display:flex;justify-content:space-between;margin-bottom:24px"><div><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Historial de Movimientos</h1><p style="font-size:12px;color:#475569;margin:4px 0 0">${movimientos.length} movimientos registrados</p></div><button class="btn btn-ghost btn-sm" onclick="exportarPDFMovimientos()">⬇ PDF</button></div>
-  ${movimientos.length===0?`<div class="card" style="padding:60px;text-align:center;color:#475569">No hay movimientos registrados aún.</div>`
-  :`<div class="card" style="overflow:hidden"><table><thead><tr style="border-bottom:1px solid #1e3a5f">${["Fecha","Item","Tipo","Cant.","Cliente","Usuario","Nota"].map(h=>`<th style="padding:10px 14px;font-size:10px;color:#475569;text-transform:uppercase;text-align:left">${h}</th>`).join("")}</tr></thead><tbody>
-  ${movimientos.map((m,i)=>`<tr style="background:${i%2===0?"#0d1b2a":"#0a1628"}">
-    <td style="font-size:11px;color:#475569">${new Date(m.fecha).toLocaleString("es-AR")}</td>
-    <td class="sans" style="font-size:12px;color:#cbd5e1">${m.item_nombre}</td>
-    <td><span class="badge" style="background:${m.tipo==="entrada"?"rgba(16,185,129,.1)":"rgba(239,68,68,.1)"};color:${m.tipo==="entrada"?"#34d399":"#f87171"}">${m.tipo==="entrada"?"▲ Entrada":"▼ Salida"}</span></td>
-    <td class="sans" style="font-weight:700;font-size:14px;color:${m.tipo==="entrada"?"#34d399":"#f87171"}">${m.tipo==="entrada"?"+":"-"}${m.cantidad}</td>
-    <td style="font-size:11px;color:${m.cliente_nombre?"#94a3b8":"#334155"}">${m.cliente_nombre||"—"}</td>
-    <td style="font-size:11px;color:#64748b">${m.usuario}</td>
-    <td style="font-size:11px;color:#475569">${m.nota||"—"}</td>
-  </tr>`).join("")}</tbody></table></div>`}`;
+  const filtrados=getMovimientosFiltrados();
+  const hayFiltro=filtroMovFechaDesde||filtroMovFechaHasta||filtroMovItem;
+  return`
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+    <div><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Historial de Movimientos</h1>
+    <p style="font-size:12px;color:#475569;margin:4px 0 0">${movimientos.length} movimientos registrados${hayFiltro?` · <span style="color:#38bdf8">${filtrados.length} filtrados</span>`:""}</p></div>
+    <div style="display:flex;gap:8px">
+      ${hayFiltro?`<button class="btn btn-ghost btn-sm" onclick="exportarPDFMovimientosFiltrados()">📄 PDF</button>`:""}
+      <button class="btn btn-ghost btn-sm" onclick="exportarPDFMovimientos()">📄 PDF completo</button>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="card" style="padding:16px 20px;margin-bottom:16px">
+    <div style="font-size:11px;color:#475569;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em">Filtros</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+      <div style="flex:1;min-width:140px">
+        <label style="font-size:10px;color:#64748b;display:block;margin-bottom:4px;text-transform:uppercase">Desde</label>
+        <input type="date" class="inp" value="${filtroMovFechaDesde}" onchange="filtroMovFechaDesde=this.value;renderVista()" style="font-size:12px;padding:8px 10px"/>
+      </div>
+      <div style="flex:1;min-width:140px">
+        <label style="font-size:10px;color:#64748b;display:block;margin-bottom:4px;text-transform:uppercase">Hasta</label>
+        <input type="date" class="inp" value="${filtroMovFechaHasta}" onchange="filtroMovFechaHasta=this.value;renderVista()" style="font-size:12px;padding:8px 10px"/>
+      </div>
+      <div style="flex:2;min-width:200px">
+        <label style="font-size:10px;color:#64748b;display:block;margin-bottom:4px;text-transform:uppercase">Item</label>
+        <input type="text" class="inp" placeholder="Buscar por item..." value="${filtroMovItem}" oninput="filtroMovItem=this.value;renderVista()" style="font-size:12px;padding:8px 10px"/>
+      </div>
+      <div>
+        <button class="btn btn-ghost btn-sm" onclick="filtroMovFechaDesde='';filtroMovFechaHasta='';filtroMovItem='';renderVista()" style="padding:8px 14px">✕ Limpiar</button>
+      </div>
+    </div>
+    ${filtroMovFechaDesde&&filtroMovFechaDesde===filtroMovFechaHasta
+      ?`<div style="margin-top:8px;font-size:11px;color:#38bdf8">📅 Mostrando movimientos del ${new Date(filtroMovFechaDesde+"T12:00:00").toLocaleDateString("es-AR",{weekday:"long",year:"numeric",month:"long",day:"numeric"})}</div>`
+      :hayFiltro?`<div style="margin-top:8px;font-size:11px;color:#38bdf8">🔍 Mostrando ${filtrados.length} de ${movimientos.length} movimientos</div>`:""}
+  </div>
+
+  ${filtrados.length===0
+    ?`<div class="card" style="padding:60px;text-align:center;color:#475569">${hayFiltro?"No hay movimientos para los filtros seleccionados":"No hay movimientos registrados aún."}</div>`
+    :`<div class="card" style="overflow:hidden"><table><thead><tr style="border-bottom:1px solid #1e3a5f">
+      ${["Fecha","Item","Tipo","Cant.","Cliente","Usuario","Nota"].map(h=>`<th style="padding:10px 14px;font-size:10px;color:#475569;text-transform:uppercase;text-align:left">${h}</th>`).join("")}
+    </tr></thead><tbody>
+    ${filtrados.map((m,i)=>`<tr style="background:${i%2===0?"#0d1b2a":"#0a1628"}">
+      <td style="font-size:11px;color:#475569">${new Date(m.fecha).toLocaleString("es-AR")}</td>
+      <td class="sans" style="font-size:12px;color:#cbd5e1">${m.item_nombre}</td>
+      <td><span class="badge" style="background:${m.tipo==="entrada"?"rgba(16,185,129,.1)":"rgba(239,68,68,.1)"};color:${m.tipo==="entrada"?"#34d399":"#f87171"}">${m.tipo==="entrada"?"Entrada":"Salida"}</span></td>
+      <td class="sans" style="font-weight:700;font-size:14px;color:${m.tipo==="entrada"?"#34d399":"#f87171"}">${m.tipo==="entrada"?"+":"-"}${m.cantidad}</td>
+      <td style="font-size:11px;color:${m.cliente_nombre?"#94a3b8":"#334155"}">${m.cliente_nombre||"—"}</td>
+      <td style="font-size:11px;color:#64748b">${m.usuario}</td>
+      <td style="font-size:11px;color:#475569">${m.nota||"—"}</td>
+    </tr>`).join("")}
+    </tbody></table></div>`}`;
 }
 
 function renderBackup(){
@@ -1009,32 +1061,54 @@ function exportarPDFStockBajo(){
   showToast("PDF de stock bajo descargado");
 }
 
-function exportarPDFMovimientos(){
+function exportarPDFMovimientosData(data, titulo, subtitulo){
   const{jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
-  const y=pdfHeader(doc,"Movimientos","Historial de entradas y salidas");
-  doc.autoTable({
-    startY:y,margin:{left:10,right:10},
-    head:[["Fecha","Item","Tipo","Cantidad","Cliente","Usuario","Nota"]],
-    body:movimientos.map(m=>[
-      new Date(m.fecha).toLocaleString("es-AR"),
-      m.item_nombre,
-      m.tipo==="entrada"?"▲ Entrada":"▼ Salida",
-      (m.tipo==="entrada"?"+":"-")+m.cantidad,
-      m.cliente_nombre||"—",
-      m.usuario,
-      m.nota||"—"
-    ]),
-    ...pdfTableStyles,
-    columnStyles:{2:{halign:"center"},3:{halign:"center",fontStyle:"bold"}},
-    didParseCell:(d)=>{
-      if(d.section==="body"&&d.column.index===2){d.cell.styles.textColor=d.cell.raw.includes("Entrada")?[20,140,80]:[180,40,40];}
-      if(d.section==="body"&&d.column.index===3){d.cell.styles.textColor=d.cell.raw.startsWith("+")?[20,140,80]:[180,40,40];}
-    },
-  });
+  const y=pdfHeader(doc, titulo, subtitulo);
+  if(data.length===0){
+    doc.setTextColor(100,116,139);doc.setFontSize(12);
+    doc.text("No hay movimientos para mostrar.",doc.internal.pageSize.getWidth()/2,y+20,{align:"center"});
+  } else {
+    doc.autoTable({
+      startY:y,margin:{left:10,right:10},
+      head:[["Fecha","Item","Tipo","Cantidad","Cliente","Usuario","Nota"]],
+      body:data.map(m=>[
+        new Date(m.fecha).toLocaleString("es-AR"),
+        m.item_nombre,
+        m.tipo==="entrada"?"Entrada":"Salida",
+        (m.tipo==="entrada"?"+":"-")+m.cantidad,
+        m.cliente_nombre||"—",
+        m.usuario,
+        m.nota||"—"
+      ]),
+      ...pdfTableStyles,
+      columnStyles:{2:{halign:"center"},3:{halign:"center",fontStyle:"bold"}},
+      didParseCell:(d)=>{
+        if(d.section==="body"&&d.column.index===2){d.cell.styles.textColor=d.cell.raw==="Entrada"?[20,140,80]:[180,40,40];}
+        if(d.section==="body"&&d.column.index===3){d.cell.styles.textColor=d.cell.raw.startsWith("+")?[20,140,80]:[180,40,40];}
+      },
+    });
+  }
   pdfFooter(doc);
-  doc.save("StockIT_Movimientos_"+new Date().toISOString().slice(0,10)+".pdf");
+  doc.save(`StockIT_Movimientos_${new Date().toISOString().slice(0,10)}.pdf`);
   showToast("PDF de movimientos descargado");
+}
+
+function exportarPDFMovimientos(){
+  exportarPDFMovimientosData(movimientos,"Movimientos","Historial completo de entradas y salidas");
+}
+
+function exportarPDFMovimientosFiltrados(){
+  const filtrados=getMovimientosFiltrados();
+  let subtitulo="Movimientos filtrados";
+  if(filtroMovFechaDesde&&filtroMovFechaDesde===filtroMovFechaHasta){
+    subtitulo="Movimientos del "+new Date(filtroMovFechaDesde+"T12:00:00").toLocaleDateString("es-AR",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+  } else {
+    if(filtroMovFechaDesde) subtitulo+=` desde ${new Date(filtroMovFechaDesde+"T12:00:00").toLocaleDateString("es-AR")}`;
+    if(filtroMovFechaHasta) subtitulo+=` hasta ${new Date(filtroMovFechaHasta+"T12:00:00").toLocaleDateString("es-AR")}`;
+    if(filtroMovItem) subtitulo+=` · Item: ${filtroMovItem}`;
+  }
+  exportarPDFMovimientosData(filtrados,"Movimientos",subtitulo);
 }
 
 function exportarExcel(){
@@ -1114,3 +1188,4 @@ async function openModalHistorialUsuario(nombreUsuario){
 </script>
 </body>
 </html>
+

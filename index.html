@@ -276,7 +276,10 @@ function renderInventario(){
     </div>
   </div>
   <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
-    <input class="inp" id="busqueda-inp" placeholder="🔍  Buscar nombre, ubicacion o codigo..." value="${busqueda}" oninput="busqueda=this.value;filtroSinStock=false;renderTablaInventario()" style="flex:1;min-width:200px;font-size:12px"/>
+    <div style="display:flex;flex:1;min-width:200px;gap:6px">
+      <input class="inp" id="busqueda-inp" placeholder="🔍  Buscar nombre, ubicacion o codigo..." value="${busqueda}" oninput="busqueda=this.value;filtroSinStock=false;renderTablaInventario()" style="flex:1;font-size:12px"/>
+      <button onclick="busqueda='';filtroSinStock=false;if(document.getElementById('busqueda-inp'))document.getElementById('busqueda-inp').value='';renderTablaInventario()" style="padding:8px 12px;background:transparent;border:1px solid #1e3a5f;border-radius:8px;color:#94a3b8;cursor:pointer;font-size:12px;white-space:nowrap">✕ Limpiar</button>
+    </div>
     <div style="display:flex;gap:5px;flex-wrap:wrap">
       ${getCategorias().map(c=>`<button onclick="categoriaActiva='${c}';renderTablaInventario()" style="padding:6px 12px;border-radius:7px;border:1px solid;border-color:${categoriaActiva===c?"#1d6fa4":"#1e3a5f"};background:${categoriaActiva===c?"rgba(29,111,164,.25)":"transparent"};color:${categoriaActiva===c?"#38bdf8":"#64748b"};font-size:11px;cursor:pointer;font-family:inherit">${c}</button>`).join("")}
     </div>
@@ -297,7 +300,7 @@ function renderAlertas(){
   </div>`;}).join("")}`;
 }
 
-let filtroMovFechaDesde="", filtroMovFechaHasta="", filtroMovItem="";
+let filtroMovFechaDesde="", filtroMovFechaHasta="", filtroMovItem="", filtroMovCliente="";
 
 function getMovimientosFiltrados(){
   return movimientos.filter(m=>{
@@ -306,13 +309,14 @@ function getMovimientosFiltrados(){
     const hasta=filtroMovFechaHasta?new Date(filtroMovFechaHasta+" 23:59:59"):null;
     const matchFecha=(!desde||fecha>=desde)&&(!hasta||fecha<=hasta);
     const matchItem=!filtroMovItem||m.item_nombre.toLowerCase().includes(filtroMovItem.toLowerCase());
-    return matchFecha&&matchItem;
+    const matchCliente=!filtroMovCliente||(m.cliente_nombre||"").toLowerCase().includes(filtroMovCliente.toLowerCase());
+    return matchFecha&&matchItem&&matchCliente;
   });
 }
 
 function renderMovimientos(){
   const filtrados=getMovimientosFiltrados();
-  const hayFiltro=filtroMovFechaDesde||filtroMovFechaHasta||filtroMovItem;
+  const hayFiltro=filtroMovFechaDesde||filtroMovFechaHasta||filtroMovItem||filtroMovCliente;
   return`
   <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
     <div><h1 class="sans" style="font-size:22px;font-weight:700;color:#f1f5f9;margin:0">Historial de Movimientos</h1>
@@ -327,20 +331,24 @@ function renderMovimientos(){
   <div class="card" style="padding:16px 20px;margin-bottom:16px">
     <div style="font-size:11px;color:#475569;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em">Filtros</div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
-      <div style="flex:1;min-width:140px">
+      <div style="flex:1;min-width:130px">
         <label style="font-size:10px;color:#64748b;display:block;margin-bottom:4px;text-transform:uppercase">Desde</label>
         <input type="date" class="inp" value="${filtroMovFechaDesde}" onchange="filtroMovFechaDesde=this.value;renderVista()" style="font-size:12px;padding:8px 10px"/>
       </div>
-      <div style="flex:1;min-width:140px">
+      <div style="flex:1;min-width:130px">
         <label style="font-size:10px;color:#64748b;display:block;margin-bottom:4px;text-transform:uppercase">Hasta</label>
         <input type="date" class="inp" value="${filtroMovFechaHasta}" onchange="filtroMovFechaHasta=this.value;renderVista()" style="font-size:12px;padding:8px 10px"/>
       </div>
-      <div style="flex:2;min-width:200px">
+      <div style="flex:1;min-width:150px">
         <label style="font-size:10px;color:#64748b;display:block;margin-bottom:4px;text-transform:uppercase">Item</label>
         <input type="text" class="inp" placeholder="Buscar por item..." value="${filtroMovItem}" oninput="filtroMovItem=this.value;renderVista()" style="font-size:12px;padding:8px 10px"/>
       </div>
+      <div style="flex:1;min-width:150px">
+        <label style="font-size:10px;color:#64748b;display:block;margin-bottom:4px;text-transform:uppercase">Cliente</label>
+        <input type="text" class="inp" placeholder="Buscar por cliente..." value="${filtroMovCliente}" oninput="filtroMovCliente=this.value;renderVista()" style="font-size:12px;padding:8px 10px"/>
+      </div>
       <div>
-        <button class="btn btn-ghost btn-sm" onclick="filtroMovFechaDesde='';filtroMovFechaHasta='';filtroMovItem='';renderVista()" style="padding:8px 14px">✕ Limpiar</button>
+        <button class="btn btn-ghost btn-sm" onclick="filtroMovFechaDesde='';filtroMovFechaHasta='';filtroMovItem='';filtroMovCliente='';renderVista()" style="padding:8px 14px">✕ Limpiar</button>
       </div>
     </div>
     ${filtroMovFechaDesde&&filtroMovFechaDesde===filtroMovFechaHasta
@@ -1107,6 +1115,7 @@ function exportarPDFMovimientosFiltrados(){
     if(filtroMovFechaDesde) subtitulo+=` desde ${new Date(filtroMovFechaDesde+"T12:00:00").toLocaleDateString("es-AR")}`;
     if(filtroMovFechaHasta) subtitulo+=` hasta ${new Date(filtroMovFechaHasta+"T12:00:00").toLocaleDateString("es-AR")}`;
     if(filtroMovItem) subtitulo+=` · Item: ${filtroMovItem}`;
+    if(filtroMovCliente) subtitulo+=` · Cliente: ${filtroMovCliente}`;
   }
   exportarPDFMovimientosData(filtrados,"Movimientos",subtitulo);
 }
@@ -1188,5 +1197,6 @@ async function openModalHistorialUsuario(nombreUsuario){
 </script>
 </body>
 </html>
+
 
      

@@ -281,7 +281,7 @@ function renderInventario(){
       <button onclick="busqueda='';filtroSinStock=false;if(document.getElementById('busqueda-inp'))document.getElementById('busqueda-inp').value='';renderTablaInventario()" style="padding:8px 12px;background:transparent;border:1px solid #1e3a5f;border-radius:8px;color:#94a3b8;cursor:pointer;font-size:12px;white-space:nowrap">✕ Limpiar</button>
     </div>
     <div style="display:flex;gap:5px;flex-wrap:wrap">
-      ${getCategorias().map(c=>`<button onclick="categoriaActiva='${c}';renderTablaInventario()" style="padding:6px 12px;border-radius:7px;border:1px solid;border-color:${categoriaActiva===c?"#1d6fa4":"#1e3a5f"};background:${categoriaActiva===c?"rgba(29,111,164,.25)":"transparent"};color:${categoriaActiva===c?"#38bdf8":"#64748b"};font-size:11px;cursor:pointer;font-family:inherit">${c}</button>`).join("")}
+      ${getCategorias().map(c=>`<button onclick="categoriaActiva='${c}';renderTablaInventario();actualizarBotonesCat()" style="padding:6px 12px;border-radius:7px;border:1px solid;border-color:${categoriaActiva===c?"#1d6fa4":"#1e3a5f"};background:${categoriaActiva===c?"rgba(29,111,164,.25)":"transparent"};color:${categoriaActiva===c?"#38bdf8":"#64748b"};font-size:11px;cursor:pointer;font-family:inherit" data-cat="${c}">${c}</button>`).join("")}
     </div>
   </div>
   <div id="tabla-inventario-wrap">
@@ -598,6 +598,15 @@ async function eliminarCliente(id){
 }
 
 // ITEMS MODALES
+function actualizarBotonesCat(){
+  document.querySelectorAll("button[data-cat]").forEach(btn=>{
+    const activo=btn.dataset.cat===categoriaActiva;
+    btn.style.borderColor=activo?"#1d6fa4":"#1e3a5f";
+    btn.style.background=activo?"rgba(29,111,164,.25)":"transparent";
+    btn.style.color=activo?"#38bdf8":"#64748b";
+  });
+}
+
 function renderTablaInventario(){
   const wrap=document.getElementById("tabla-inventario-wrap");
   if(wrap){wrap.innerHTML=renderTablaInventarioHTML();}
@@ -1197,6 +1206,3 @@ async function openModalHistorialUsuario(nombreUsuario){
 </script>
 </body>
 </html>
-
-
-     
